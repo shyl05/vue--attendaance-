@@ -1,0 +1,5 @@
+"employeeId","employeeName","punchTime","IOType","punchMode","eventStatus","punchDate"
+5437,"Thor Odinson","10:30:00","IN","Card","Allowed","2022-06-15"
+5564,"Abhilash N","09:00:00","IN","Card","Allowed","2022-06-15"
+5564,"Abhilash N","18:00:00","OUT","Card","Allowed","2022-06-15"
+5564,"Abhilash N","18:00:00","OUT","Card","Allowed","2022-06-15"

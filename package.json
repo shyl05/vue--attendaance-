@@ -1,0 +1,20 @@
+{
+  "name": "attendance-tracker",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "service": "nodemon ./services/server.js"
+  },
+  "dependencies": {
+    "async": "^3.2.4",
+    "cookie-parser": "~1.4.4",
+    "csvtojson": "^2.0.10",
+    "debug": "~2.6.9",
+    "json2csv": "^5.0.7",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.3",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.16",
+    "ssh2-sftp-client": "^9.0.0"
+  }
+}

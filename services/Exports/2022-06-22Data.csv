@@ -1,0 +1,5 @@
+"employeeId","employeeName","punchTime","IOType","punchMode","eventStatus","punchDate"
+5567,"Shylesh T","09:00:00","IN","Card","Allowed","2022-06-22"
+5567,"Shylesh T","12:30:00","OUT","Card","Allowed","2022-06-22"
+5567,"Shylesh T","13:30:00","IN","Card","Allowed","2022-06-22"
+5567,"Shylesh T","18:30:00","OUT","Card","Allowed","2022-06-22"
