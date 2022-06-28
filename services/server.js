@@ -45,7 +45,7 @@ csvtojson().fromFile(`services/Exports/${filterDate}Data.csv`).then(source=>{
       
       // Query to check rawdata against tempdata
       connection.query({
-        sql:'delete t1 FROM rawdata t1 INNER JOIN tempdata t2 WHERE t1.id < t2.id AND t1.employeeId = t2.employeeId AND t1.punchDate = t2.punchDate AND t1.punchTime = t2.punchTime AND t1.IOType = t2.IOType;'
+        sql:'delete t2 FROM rawdata t1 INNER JOIN tempdata t2 WHERE t1.id < t2.id AND t1.employeeId = t2.employeeId AND t1.punchDate = t2.punchDate AND t1.punchTime = t2.punchTime AND t1.IOType = t2.IOType;'
         },function (error, results, fields) {
           if (error) throw error;
         }
@@ -107,19 +107,12 @@ csvtojson().fromFile(`services/Exports/${filterDate}Data.csv`).then(source=>{
 
   // Insert User Entry Function - Raw data table
 
-  function insertIntoRaw(sourcedata,callback) {
-    async.each(sourcedata, function (entry, asyncCallback) {
-      connection.query('INSERT INTO rawdata SET ?', entry, function (err, data) {
-        return asyncCallback(err, data);
-      });
-    }, 
-    
-    function (error) {
-      if (error) {           
-        return callback(error);
-      }
-      return callback();
-    });
+  function insertIntoRaw() {
+    connection.query({
+      sql:'INSERT INTO rawdata (employeeId,employeeName,punchTime,IOType,punchMode,eventStatus,punchDate) SELECT employeeId,employeeName,punchTime,IOType,punchMode,eventStatus,punchDate FROM tempdata'
+      },function (error, results, fields) {
+        if (error) throw error;
+    })
   }
 
 
@@ -133,14 +126,8 @@ csvtojson().fromFile(`services/Exports/${filterDate}Data.csv`).then(source=>{
         rollback(connection, temperror);
       } 
       else {
-        insertIntoRaw(processResult,function (rawerror, rawdata) {
-          if (rawerror) {
-            rollback(connection, rawerror);
-          } 
-          else {
-            commit(connection);
-          }
-        });
+        insertIntoRaw()
+        commit(connection);
       }
     });
   });
