@@ -56,7 +56,7 @@ csvtojson().fromFile(`services/Exports/${filterDate}Data.csv`).then(source=>{
         sql:'delete t2 FROM rawdata t1 INNER JOIN rawdata t2 WHERE t1.id < t2.id AND t1.employeeId = t2.employeeId AND t1.punchDate = t2.punchDate AND t1.punchTime = t2.punchTime AND t1.IOType = t2.IOType;'
         },function (error, results, fields) {
           if (error) throw error;
-          console.log('Duplicate Removal Done');
+          console.log('Duplicate Removal Done from rawdata');
           processing();
         }
       );
