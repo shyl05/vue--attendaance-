@@ -74,7 +74,7 @@ const processing = ()=>{
                     let start;
                     let end;
                     if(loopEmpdata[i].IOType === 'IN' && loopEmpdata[i].punchDate === filterDate){
-                        start = moment(loopEmpdata[i].punchTime,"HH:mm:ss");
+                        start = moment(loopEmpdata[i].punchTime,"HH:mm:ss");    
                     }
                     if(loopEmpdata[i+1].IOType === 'OUT' && loopEmpdata[i+1].punchDate === filterDate){
                         end = moment(loopEmpdata[i+1].punchTime,"HH:mm:ss"); 
@@ -125,6 +125,25 @@ const processing = ()=>{
                         console.log('Duplicates are removed from processeddata');
                         }
                     );
+
+                    connection.query({
+                        sql:'SELECT '+
+                            'm.employeeId,'+
+                            'm.employeeName,'+
+                            'm.punchIn,'+
+                            'm.punchOut,'+
+                            'm.totalHours,'+
+                            'm.punchDate AS processeddata,'+ 
+                            'c.project AS projectdata '+
+                            'FROM processeddata m INNER JOIN projectdata c ON c.employeeId = m.employeeId;'
+                        },function (erro, results,field) {
+                            if (erro) throw erro;
+                            var result = results.map(v => Object.assign({}, v));
+                            console.log(result);
+                        }
+                    );
+
+
 
                 });
             }
