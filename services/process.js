@@ -2,6 +2,8 @@ const mysql = require("mysql");
 var moment = require('moment');
 var async = require('async');
 
+var processed = require('./processed');
+
 // Date functions
 var yesterday = moment().subtract(1, 'day')
 var filterDate = yesterday.format("YYYY-MM-DD"); 
@@ -43,7 +45,6 @@ const processing = ()=>{
             
             // keys are array of employeeId's here
             var keysdata = [...map.keys()]
-            console.log(keysdata);
 
             for(let key of keysdata){
                 empdata = map.get(key);
@@ -126,25 +127,7 @@ const processing = ()=>{
                         }
                     );
 
-                    connection.query({
-                        sql:'SELECT '+
-                            'm.employeeId,'+
-                            'm.employeeName,'+
-                            'm.punchIn,'+
-                            'm.punchOut,'+
-                            'm.totalHours,'+
-                            'm.punchDate AS processeddata,'+ 
-                            'c.project AS projectdata '+
-                            'FROM processeddata m INNER JOIN projectdata c ON c.employeeId = m.employeeId;'
-                        },function (erro, results,field) {
-                            if (erro) throw erro;
-                            var result = results.map(v => Object.assign({}, v));
-                            console.log(result);
-                        }
-                    );
-
-
-
+                    processed();
                 });
             }
 
@@ -164,18 +147,19 @@ const processing = ()=>{
                 });
             }
 
+
             // Transaction - processeddata
             connection.beginTransaction(function (transacterror) {
                 if (transacterror) {
                     throw transacterror;
                 }
                 insertIntoProcess(finalEmpArray,function (processerror, processdata) {
-                if (processerror) {
-                    rollback(connection, processerror);
-                } 
-                else {
-                    commit(connection);
-                }
+                    if (processerror) {
+                        rollback(connection, processerror);
+                    } 
+                    else {
+                        commit(connection);
+                    }
                 });
             });
 
