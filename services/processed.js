@@ -66,9 +66,9 @@ const processed=()=>{
 
                 let final = [];
                 connection.query({
-                    sql:'SELECT * FROM processeddata WHERE punchDate = ? AND employeeId NOT IN (SELECT employeeId FROM exclusiondata);'
+                    sql:'SELECT * FROM processeddata WHERE employeeId NOT IN (SELECT employeeId FROM exclusiondata);'
                     },[filterDate],function (err1, results,fields) {
-                        if (err1){ throw err1};
+                        if (err1){ throw err1}
                         final = results;
                     }
                 );
